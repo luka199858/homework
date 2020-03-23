@@ -1,0 +1,61 @@
+<!doctype html>
+
+<head>
+    <title>Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width , user-scalable=on, initial-scale=1.0, minimum-scale=1.0">
+ 
+   
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<?php
+//require('open.php');
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    $login = ($_POST['username']);
+    $firstname = ($_POST['firstname']);
+    $lastname = ($_POST['lastname']);
+    $email = ($_POST['email']);
+    $password = ($_POST['password']);
+    $passwordrepeat = ($_POST['passwordrepeat']);
+    if (empty($_POST['username'])) {
+        $error = "You must ender username"; }
+    else{$login=$_POST['username'];
+        $lower=strtolower($login);}
+        if($login!=$lower){
+            $error="Only (a-z)(1-0)";}
+        elseif (strlen($login) < 2 || strlen($login) > 10) {
+            $error = "Incorret username";}
+       elseif (strlen($firstname) < 1 || strlen($lastname) < 1) {
+            $error = "Enter firstname or username";}
+       elseif (!preg_match("#[A-Z]+#", $password)) {
+            $error = "Password must include at least one CAPS!";}
+        elseif (!preg_match("#[0-9]+#", $password)) {
+            $error = "Password must include (0-9)!";}
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $error="email is invalid";}
+        elseif (strlen($password) < 8 || strlen($password) > 16) {
+            $error = "Change password lenght";}
+     elseif ($password != $passwordrepeat) {
+            $error = "Please repeat correct password";}
+    else{$s="Registration Completed";}
+
+}
+?>
+<div class="container">
+    <form  class="form-signin" method="POST">
+        <h1>Registration</h1>
+        <?php if (isset($s)){?> <div class="alert alert-success" role="alert"><?php echo $s;?> </div> <?php }?>
+        <?php if (isset($error)){?> <div class="alert alert-danger" role="alert"><?php echo $error;?> </div> <?php }?>
+        <input type="text" name="username" class="form-control" placeholder="Username" required><br>
+        <input type="text" name="firstname" class="form-control" placeholder="Firstname" required><br>
+        <input type="text" name="lastname" class="form-control" placeholder="Lastname" required><br>
+        <input type="text" name="email" class="form-control" placeholder="email" required><br>
+        <input type="password" name="password" class="form-control" placeholder="password" required><br>
+        <input type="password" name="passwordrepeat" class="form-control" placeholder="password Repeat" required><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>
